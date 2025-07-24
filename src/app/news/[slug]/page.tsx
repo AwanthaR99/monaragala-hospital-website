@@ -20,14 +20,13 @@ async function getSingleNewsData(slug: string): Promise<SingleNews | null> {
     content,
     _createdAt
   }`;
- const data = await client.fetch(query, {}, { cache: 'no-store' });
+  const data = await client.fetch(query, {}, { cache: 'no-store' });
   return data;
 }
 
 const SingleNewsPage = async ({ params }: { params: { slug: string } }) => {
   const newsItem = await getSingleNewsData(params.slug);
 
-  // This check is very important. If no news item is found, show a "Not Found" message.
   if (!newsItem) {
     return (
       <div className="container mx-auto text-center py-20">
@@ -42,41 +41,39 @@ const SingleNewsPage = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <div className="bg-white" data-aos="fade-in">
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-6 py-12 max-w-4xl">
         <article>
-          {/* Back link */}
           <div className="mb-8">
-            <Link href="/news" className="text-gray-600 hover:text-blue-600 font-semibold">
+            <Link href="/news" className="text-blue-600 hover:underline font-semibold font-lato">
               &larr; සියලුම පුවත් වෙත
             </Link>
           </div>
 
-          {/* Title */}
-          <h1 className="text-3xl md:text-5xl font-poppins font-bold text-gray-900 mb-4">
-            {newsItem.title}
-          </h1>
-
-          {/* Published Date */}
-          <p className="text-gray-500 font-lato mb-6">
-            Published on: {new Date(newsItem._createdAt).toLocaleDateString('en-US', {
+          <p className="text-gray-500 font-lato mb-2 text-sm">
+            Published on {new Date(newsItem._createdAt).toLocaleDateString('en-US', {
               year: 'numeric', month: 'long', day: 'numeric'
             })}
           </p>
 
-          {/* Main Image */}
+          {/* Title - Reduced font size on medium screens and up */}
+          <h1 className="text-3xl md:text-4xl font-poppins font-bold text-gray-900 mb-8 leading-tight">
+            {newsItem.title}
+          </h1>
+
+          {/* Main Image - Reduced height */}
           {newsItem.imageUrl && (
-            <div className="relative w-full h-64 md:h-96 mb-8 rounded-lg overflow-hidden shadow-lg">
+            <div className="relative w-full h-80 md:h-96 mb-8 rounded-lg overflow-hidden shadow-lg" data-aos="fade-up">
               <Image 
                 src={newsItem.imageUrl} 
                 alt={newsItem.title}
-                layout="fill"
-                objectFit="cover"
+                fill
+                className="object-cover"
+                priority
               />
             </div>
           )}
 
-          {/* Content Body */}
-          <div className="prose lg:prose-xl max-w-none font-lato text-gray-800">
+          <div className="prose lg:prose-xl max-w-none font-lato text-gray-800" data-aos="fade-up" data-aos-delay="100">
             <PortableText value={newsItem.content} />
           </div>
 
