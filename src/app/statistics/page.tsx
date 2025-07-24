@@ -13,7 +13,7 @@ ChartJS.register(
 );
 
 interface StatData {
-  month: number; // Now a number
+  month: number;
   opdPatients: number;
   surgeries: number;
   year: number;
@@ -22,11 +22,20 @@ interface StatData {
 // Helper to convert month number to name
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+// CORRECTED CHART OPTIONS
 const chartOptions = {
     responsive: true,
     plugins: {
-      legend: { position: 'top' as const },
-      title: { display: true, font: { size: 18, family: 'Poppins' } },
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        font: {
+            size: 18,
+            family: 'Poppins'
+        }
+      },
     },
 };
 
@@ -35,7 +44,6 @@ const StatisticsPage = () => {
 
   useEffect(() => {
     const getStatsData = async () => {
-      // The query now orders by the month NUMBER
       const query = `*[_type == "statistics"] | order(year asc, month asc)`;
       const data = await client.fetch(query, {}, { cache: 'no-store' });
       setChartData(data);
@@ -43,9 +51,8 @@ const StatisticsPage = () => {
     getStatsData();
   }, []);
 
-  // Prepare data for the charts
   const monthlyOPDData = {
-    labels: chartData.map(d => monthNames[d.month - 1]), // Convert number to name
+    labels: chartData.map(d => monthNames[d.month - 1]),
     datasets: [{
       label: 'OPD Patients',
       data: chartData.map(d => d.opdPatients),
@@ -56,7 +63,7 @@ const StatisticsPage = () => {
   };
 
   const monthlySurgeryData = {
-    labels: chartData.map(d => monthNames[d.month - 1]), // Convert number to name
+    labels: chartData.map(d => monthNames[d.month - 1]),
     datasets: [{
       label: 'Surgeries',
       data: chartData.map(d => d.surgeries),
@@ -81,10 +88,18 @@ const StatisticsPage = () => {
         {chartData.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 <div className="bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up">
-                    <Bar options={{...chartOptions, title: {...chartOptions.title, text: 'Monthly OPD Visits'}}} data={monthlyOPDData} />
+                    {/* CORRECTED WAY TO SET TITLE */}
+                    <Bar 
+                        options={{...chartOptions, plugins: {...chartOptions.plugins, title: {...chartOptions.plugins.title, text: 'Monthly OPD Visits'}}}} 
+                        data={monthlyOPDData} 
+                    />
                 </div>
                 <div className="bg-white p-6 rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="100">
-                    <Line options={{...chartOptions, title: {...chartOptions.title, text: 'Monthly Surgeries'}}} data={monthlySurgeryData} />
+                    {/* CORRECTED WAY TO SET TITLE */}
+                    <Line 
+                        options={{...chartOptions, plugins: {...chartOptions.plugins, title: {...chartOptions.plugins.title, text: 'Monthly Surgeries'}}}} 
+                        data={monthlySurgeryData} 
+                    />
                 </div>
             </div>
         ) : (
