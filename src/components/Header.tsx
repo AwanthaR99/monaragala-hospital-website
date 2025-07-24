@@ -37,8 +37,8 @@ const Header = () => {
         <Link href="/" className="flex items-center gap-2 flex-shrink-0">
           <Image src="/images/logo.png" alt="Monaragala Hospital Logo" width={40} height={40} className="h-10 w-10"/>
           <div className="flex flex-col">
-            <span className="font-poppins font-bold text-base sm:text-lg leading-tight text-gray-800">DGH Monaragala</span>
-            <span className="font-lato text-xs leading-tight text-gray-500">District General Hospital</span>
+            <span className="font-poppins font-bold text-base sm:text-lg leading-tight text-gray-800">District General Hospital Monaragala</span>
+           
           </div>
         </Link>
 
