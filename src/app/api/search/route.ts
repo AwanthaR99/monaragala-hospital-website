@@ -9,32 +9,30 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Query parameter is required' }, { status: 400 });
   }
 
-  // This is the new, improved GROQ query
+  // New, improved query that includes "vacancies"
   const groqQuery = `
-    *[_type in ["news", "doctor", "department", "clinic"] && (
-      _type match $query || // <-- This new line searches the content type itself
-      // For news
+    *[_type in ["news", "doctor", "department", "clinic", "vacancy"] && (
+      _type match $query ||
+      // Search fields for different types
       title match $query || 
-      shortDescription match $query ||
-      // For doctors
-      name match $query || 
-      speciality match $query ||
-      // For departments
       name match $query ||
-      shortDescription match $query ||
-      // For clinics
+      speciality match $query ||
       clinicName match $query ||
-      doctorName match $query
+      doctorName match $query ||
+      positionTitle match $query ||
+      shortDescription match $query
     )]{
       _type,
-      "title": coalesce(title, name, clinicName, positionTitle), // Added positionTitle for vacancies
+      "title": coalesce(title, name, clinicName, positionTitle),
       "slug": slug.current,
       _id
     }[0...10]
   `;
+  
+  const params = { query: `${query}*` };
 
   try {
-    const results = await client.fetch(groqQuery, { query: `${query}*` });
+    const results = await client.fetch(groqQuery, params);
     return NextResponse.json(results);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch search results' }, { status: 500 });
