@@ -5,7 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AOSInitializer from "@/components/AOSInitializer";
-import AuthProvider from "@/components/AuthProvider"; 
+import AuthProvider from "@/components/AuthProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -32,12 +32,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${lato.variable} font-lato`}>
-        <AuthProvider> 
-          <AOSInitializer />
-          <Header />
-          {children}
-          <Footer />
-        </AuthProvider> 
+        {/* This wrapper div will prevent horizontal scroll on all screen sizes */}
+        <div className="overflow-x-hidden">
+          <AuthProvider>
+            <AOSInitializer />
+            <Header />
+            {children}
+            <Footer />
+          </AuthProvider>
+        </div>
       </body>
     </html>
   );
