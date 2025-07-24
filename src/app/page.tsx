@@ -4,6 +4,7 @@ import Button from '@/components/Button';
 import Card from '@/components/Card';
 import { FaStethoscope, FaNewspaper, FaUserMd } from 'react-icons/fa';
 import { client } from '@/lib/sanityClient';
+import StatsCounter from '@/components/StatsCounter';
 
 // Define the type for our news data
 interface News {
@@ -96,6 +97,11 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+
+  {/* --- NEW STATS COUNTER SECTION --- */}
+      <StatsCounter />
+
 
       {/* About Us Snapshot */}
       <section className="py-16">
