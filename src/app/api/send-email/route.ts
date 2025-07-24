@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       from: 'Monaragala Hospital Website <onboarding@resend.dev>', // This is a required field by Resend
       to: ['sachirathnayake9@gmail.com'], // <-- රෝහලේ ඊමේල් එක මෙතනට දාන්න
       subject: `New Message from ${name}: ${subject}`,
-      reply_to: email,
+      replyTo: email,
       html: `<p>You have a new message from the contact form:</p>
              <p><strong>Name:</strong> ${name}</p>
              <p><strong>Email:</strong> ${email}</p>
