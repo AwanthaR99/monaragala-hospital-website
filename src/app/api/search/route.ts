@@ -9,27 +9,31 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Query parameter is required' }, { status: 400 });
   }
 
-  // New, improved query that searches across all relevant types and fields
+  // This is the final, comprehensive query
   const groqQuery = `
-    *[_type in ["news", "doctor", "department", "clinic", "vacancy"] && (
-      // Searchable fields
+    *[_type in ["news", "doctor", "department", "clinic", "vacancy", "tender", "award"] && (
+      // Searchable fields for all types
+      _type match $searchTerm || 
       title match $searchTerm || 
       name match $searchTerm ||
       speciality match $searchTerm ||
       clinicName match $searchTerm ||
+      doctorName match $searchTerm ||
       positionTitle match $searchTerm ||
-      shortDescription match $searchTerm
+      tenderTitle match $searchTerm ||
+      awardTitle match $searchTerm ||
+      shortDescription match $searchTerm ||
+      description match $searchTerm
     )]{
       _type,
       // Use coalesce to pick the first available title/name field
-      "title": coalesce(title, name, clinicName, positionTitle), 
+      "title": coalesce(title, name, clinicName, positionTitle, tenderTitle, awardTitle), 
       "slug": slug.current,
       _id
-    }[0...10]
+    }[0...10] // Limit to 10 results
   `;
   
-  // Define params object that matches the query variable
-  const params = { searchTerm: `${searchTerm}*` }; // Use wildcard for partial matches
+  const params = { searchTerm: `*${searchTerm}*` }; // Use wildcards for contains search
 
   try {
     const results = await client.fetch(groqQuery, params);
