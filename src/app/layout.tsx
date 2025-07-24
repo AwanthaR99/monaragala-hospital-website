@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Poppins, Lato } from "next/font/google";
 import "./globals.css";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import AOSInitializer from '@/components/AOSInitializer';
+import AOSInitializer from "@/components/AOSInitializer";
+import AuthProvider from "@/components/AuthProvider"; 
 
-// Configure the fonts
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -31,10 +32,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${lato.variable} font-lato`}>
-        <AOSInitializer />
-        <Header /> 
-        {children}
-        <Footer /> 
+        <AuthProvider> 
+          <AOSInitializer />
+          <Header />
+          {children}
+          <Footer />
+        </AuthProvider> 
       </body>
     </html>
   );
