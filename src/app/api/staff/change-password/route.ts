@@ -2,7 +2,7 @@
 import { client } from '@/lib/sanityClient';
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { authOptions } from '@/lib/auth';
 
 export async function POST(request: Request) {

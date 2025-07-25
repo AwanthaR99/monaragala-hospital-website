@@ -2,7 +2,7 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { client } from "@/lib/sanityClient";
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 interface SanityUser {
     _id: string; name: string; email: string; password?: string; hasChangedInitialPassword?: boolean;

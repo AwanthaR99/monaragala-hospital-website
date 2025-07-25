@@ -94,6 +94,7 @@ const Footer = () => {
           &copy; {new Date().getFullYear()} District General Hospital, Monaragala. All Rights Reserved.
         </div>
       </div>
+     
     </footer>
   );
 };
